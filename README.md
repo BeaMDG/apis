@@ -1,2 +1,92 @@
-# apis
-integración de apis
+# Integración de API B con API A
+
+Este documento describe el flujo de integración entre la API B y la API A. API B consume datos de facturación de la API A, los transforma y los devuelve en su propio formato. Además, se incluye la documentación de los endpoints y un diagrama del flujo de trabajo.
+## Objetivo
+El objetivo principal de esta integración es obtener las facturas desde la API A en un rango de fechas determinado y enviar estos datos a la API B para su posterior procesamiento. Este documento detalla el flujo de integración y proporciona ejemplos de solicitudes y respuestas.
+
+## Índice
+
+1. [Flujo de Integración](#flujo-de-integración)
+2. [Documentación de la API A](#documentación-de-la-api-a)
+3. [Documentación de la API B](#documentación-de-la-api-b)
+4. [Diagrama de Flujo](#diagrama-de-flujo)
+5. [Integración entre API A y API B](#integración-entre-api-a-y-api-b)
+
+## Flujo requerido
+
+El flujo de integración entre la API B y la API A sigue estos pasos:
+
+1. **El Cliente envía una solicitud GET** a la API B con los parámetros `start_date` y `end_date`.
+2. **API B recibe la solicitud** y realiza una petición interna a la API A con los parámetros `fecha_inicio` y `fecha_fin`.
+3. **API A devuelve las facturas** correspondientes al rango de fechas en su propio formato (factura_id, cliente, monto, etc.).
+4. **API B transforma los datos** recibidos de la API A al formato esperado por sus consumidores.
+5. **API B responde al Cliente** con las facturas en el formato de API B (invoice_id, customer, amount_due, etc.).
+
+### Esquema de transformación de datos:
+
+| Campo API A   | Campo API B    |
+|---------------|----------------|
+| `id`          | `invoice_id`   |
+| `cliente`     | `customer`     |
+| `monto`       | `amount_due`   |
+| `fecha_emision`| `date_issued` |
+
+## Documentación de la API A
+
+[Documentación API A](URL del archivo)
+
+###Obtención del Token de Autenticación API A
+
+Para acceder a la API A, es necesario obtener un token de autenticación. A continuación, se describen los pasos necesarios para obtener dicho token.
+
+1. **Credenciales de Cliente**:
+   - Asegúrate de tener tu `client_id` y `client_secret`. Estas son proporcionadas por el proveedor de la API.
+
+2. **Realizar la Solicitud POST**:
+   - Ejecuta el siguiente comando `curl` para obtener el token:
+
+   ```bash
+   curl -X POST https://api.sistemaA.com/oauth/token \
+   -H "Content-Type: application/x-www-form-urlencoded" \
+   -d "grant_type=client_credentials&client_id=TU_CLIENT_ID&client_secret=TU_CLIENT_SECRET"```
+
+ 3. **Ejemplo de respuesta**:<br>
+    {
+  "access_token": "ACCESS_TOKEN",
+  "token_type": "bearer",
+  "expires_in": 3600
+  }
+   
+## Documentación de la API B
+[Documentacion API B](URL del archivo)
+
+## Diagrama de Flujo
+
+A continuación se muestra el diagrama de flujo que describe la interacción entre la API B y la API A.
+
+![Diagrama de Flujo](ruta/al/diagrama.png)
+
+# Integración entre API A y API B
+
+## Introducción
+La integración entre la API A (Sistema de Facturación A) y la API B (Sistema de Facturación B) permite obtener y transformar datos de facturación. La API A se utiliza para consultar facturas, mientras que la API B se encarga de recibir estos datos y devolverlos en un formato específico.
+
+## Flujo de Integración
+1. **Obtener Token de Autenticación de la API A:**
+   - Realizar una solicitud POST a la URL `https://api.sistemaA.com/oauth/token` con las credenciales de cliente para obtener un token.
+
+2. **Consulta de Facturas a la API A:**
+   - Usar el token obtenido para realizar una solicitud GET al endpoint de la API A (`/facturas`) especificando las fechas requeridas.
+
+3. **Transformación de Datos:**
+   - Procesar la respuesta de la API A para adaptarla al formato requerido por la API B. Esto puede incluir renombrar campos y cambiar tipos de datos.
+
+4. **Enviar Datos a la API B:**
+   - Realizar una solicitud GET al endpoint de la API B (`/bills`) con los datos transformados y la clave API en el encabezado.
+
+5. **Manejo de Respuestas:**
+   - Procesar la respuesta de la API B, que confirmará si los datos fueron recibidos correctamente.
+
+
+
+
