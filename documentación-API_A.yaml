@@ -1,0 +1,96 @@
+openapi: 3.0.0
+info:
+    title: API_A sistema de facturaciOn A.
+    description: Esta API nutre de información sobre las facturas a la API_B.
+    version: 1.0.0
+    contact:
+        name: Soporte
+        email: email_de_soporte@soporte.com
+
+servers:
+    - url: https://api.sistemaA.com
+    description: URL de produccion del sistema de facturacion
+
+paths:
+    /facturas:
+     get:
+      summary: Consulta de facturas
+      description: Obtiene la lista de facturas emitidas en un rango de fechas.
+      operationId: getFacturas
+      parameters:
+        - name: fecha_inicio
+          in: query
+          required: true
+          description: Fecha de inicio para el rango de consulta. Formato: YYYY-MM-DD.
+          schema:
+            type: string
+            format: date
+            example: "2023-05-01"
+        - name: fecha_fin
+          in: query
+          required: true
+          description: Fecha de fin para el rango de consulta. Formato: YYYY-MM-DD.
+          schema:
+            type: string
+            format: date
+            example: "2023-05-31"
+      responses:
+        '200':
+          description: Petición recibida correctamente.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/FacturasResponse'
+        '400':
+          description: Solicitud inválida (fechas incorrectas).
+        '401':
+          description: Autenticación fallida (error en token).
+        '500':
+          description: Error interno del servidor.
+      security:
+        - bearerAuth: []
+
+components:
+  schemas:
+    Factura:
+      type: object
+      properties:
+        id:
+          type: string
+          description: ID de la factura.
+          example: "123"
+        cliente:
+          type: string
+          description: Nombre del cliente.
+          example: "Empresa XYZ"
+        monto:
+          type: number
+          format: float
+          description: Total de la factura.
+          example: 1500.75
+        fecha_emision:
+          type: string
+          format: date
+          description: Fecha de emisión de la factura.
+          example: "2023-05-01"
+        estado:
+          type: string
+          description: Estado de la factura.
+          example: "pagada"
+    
+    FacturasResponse:
+      type: object
+      properties:
+        facturas:
+          type: array
+          items:
+            $ref: '#/components/schemas/Factura'
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+      description: |
+        El token de acceso debe obtenerse utilizando las credenciales de cliente (OAuth 2.0).
+        Proporcione el token en el encabezado Authorization: `Bearer <token>`.

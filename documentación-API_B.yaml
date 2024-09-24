@@ -1,0 +1,103 @@
+openapi: 3.0.0
+info:
+    title: API_B sistema de facturaciOn B.
+    description: API B se comporta como un intermediario, recopilando la información de la API A y adaptándola a su formato para exponerla a los usuarios finales.
+    version: 1.0.0
+    contact:
+        name: Soporte
+        email: email_de_soporte@soporte.com
+
+servers:
+    - url: https://api.sistemaB.com
+    description: URL de produccion del sistema de facturacion B
+
+paths:
+    /bills:
+     get:
+      summary: Consulta de facturas desde la API B (Datos de API A)s
+      description: Obtiene la lista de facturas emitidas en un rango de fechas. Los datos son recogidos desde la API A, transformados y                      devueltos en el formato del Sistema de Facturación B.
+
+      El proceso de integración con la API A es el siguiente:
+        1. Se recibe una solicitud GET con los parámetros `start_date` y `end_date`.
+        2. Internamente, la API B realiza una solicitud a la API A con los mismos parámetros (`fecha_inicio` y `fecha_fin`).
+        3. Los datos de la API A son transformados al formato de la API B.
+        4. La API B devuelve las facturas transformadas al solicitante.
+
+      operationId: getBillsFromA
+      parameters:
+        - name: start_date
+          in: query
+          required: true
+          description: Fecha de inicio rango de consulta. Formato: YYYY-MM-DD.
+          schema:
+            type: string
+            format: date
+            example: "2023-05-01"
+        - name: end_date
+          in: query
+          required: true
+          description: Fecha de fin rango de consulta. Formato: YYYY-MM-DD.
+          schema:
+            type: string
+            format: date
+            example: "2023-05-31"
+      responses:
+        '200':
+          description: OK. Los datos provienen de la API A y son transformados al formato de la API B.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BillsResponse'
+        '400':
+          description: Solicitud inválida (fechas incorrectas).
+        '401':
+          description: Autenticación fallida (API key no válida).
+        '500':
+          description: Error interno del servidor o fallo de comunicación con la API A.
+      security:
+        - apiKeyAuth: []
+
+components:
+  schemas:
+    Bill:
+      type: object
+      properties:
+        invoice_id:
+          type: string
+          description: IID de la factura.
+          example: "123"
+        customer:
+          type: string
+          description: Nombre del cliente.
+          example: "Empresa XYZ"
+        amount_due:
+          type: number
+          format: float
+          description: Monto total adeudado de la factura.
+          example: 1500.75
+        date_issued:
+          type: string
+          format: date
+          description: Fecha de emisión de la factura.
+          example: "2023-05-01"
+        status:
+          type: string
+          description: Estado de la factura (e.g., pagada, pendiente).
+          example: "pagada"
+
+    BillsResponse:
+      type: object
+      properties:
+        invoices:
+          type: array
+          items:
+            $ref: '#/components/schemas/Bill'
+
+  securitySchemes:
+    apiKeyAuth:
+      type: apiKey
+      in: header
+      name: x-api-key
+      description: |
+        Se requiere una clave API (API key) para autenticar la solicitud. 
+        Incluya la clave en el encabezado `x-api-key` para todas las solicitudes.
