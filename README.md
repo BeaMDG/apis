@@ -1,8 +1,8 @@
 # Integración de API B con API A
 
-Este documento describe el flujo de integración entre la API B y la API A. API B consume datos de facturación de la API A, los transforma y los devuelve en su propio formato. Además, se incluye la documentación de los endpoints y un diagrama del flujo de trabajo.
+Este documento describe el flujo de integración entre la API B y la API A. API B consume datos de facturación de la API A, los transforma y los devuelve en su propio formato. Además, se incluye la documentación de las APIs y un diagrama del flujo de trabajo.
 ## Objetivo
-El objetivo principal de esta integración es obtener las facturas desde la API A en un rango de fechas determinado y enviar estos datos a la API B para su posterior procesamiento. Este documento detalla el flujo de integración y proporciona ejemplos de solicitudes y respuestas.
+El objetivo principal de esta integración es obtener las facturas desde la API A en un rango de fechas determinado y enviar estos datos a la API B para su posterior procesamiento.
 
 ## Índice
 
@@ -33,7 +33,7 @@ El flujo de integración entre la API B y la API A sigue estos pasos:
 
 ## Documentación de la API A
 
-[Documentación API A](URL del archivo)
+Aqui encontrarás la documentación de la API A [Documentación API A](https://github.com/BeaMDG/apis/blob/main/documentaci%C3%B3n-API_A.yaml)
 
 ###Obtención del Token de Autenticación API A
 
@@ -58,13 +58,13 @@ Para acceder a la API A, es necesario obtener un token de autenticación. A cont
   }
    
 ## Documentación de la API B
-[Documentacion API B](URL del archivo)
+Aqui encontrarás la documentación de la API B [Documentacion API B](https://github.com/BeaMDG/apis/blob/main/documentaci%C3%B3n-API_B.yaml)
 
 ## Diagrama de Flujo
 
 A continuación se muestra el diagrama de flujo que describe la interacción entre la API B y la API A.
 
-![Diagrama de Flujo](ruta/al/diagrama.png)
+![Diagrama de Flujo](https://github.com/BeaMDG/apis/blob/main/diagrama.png)
 
 # Integración entre API A y API B
 
