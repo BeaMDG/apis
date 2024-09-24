@@ -15,7 +15,7 @@ paths:
     /bills:
      get:
       summary: Consulta de facturas desde la API B (Datos de API A)s
-      description: Obtiene la lista de facturas emitidas en un rango de fechas. Los datos son recogidos desde la API A, transformados y                      devueltos en el formato del Sistema de Facturación B.
+      description: Obtiene la lista de facturas emitidas en un rango de fechas. Los datos son recogidos desde la API A, transformados y devueltos en el formato del Sistema de Facturación B.
 
       El proceso de integración con la API A es el siguiente:
         1. Se recibe una solicitud GET con los parámetros `start_date` y `end_date`.
