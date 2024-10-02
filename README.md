@@ -4,7 +4,7 @@ Este documento describe el flujo de integración entre la API B y la API A. API 
 
 ## Aclaraciones
 
-A considerar el hecho de que es más eficiente realizar la transformación directamente en la API B, en lugar de utilizar un componente intermedio, ya que simplifica el flujo, lo que reduciría la latencia y los puntos de fallo. La API B ya poseería la lógica de negocio y es el punto final que entiende el formato requerido. También es más fácil de mantener y escalar ya que cualquier cambio que se realice en la API A solo implicaría realizar otro cambio en la API B y no en otro componente más.
+A considerar el hecho de que es más eficiente realizar la transformación de los datos directamente en la API B, en lugar de utilizar un componente intermedio, ya que simplifica el flujo, lo que reduciría la latencia y los puntos de fallo. La API B ya poseería la lógica de negocio y es el punto final que entiende el formato requerido. También es más fácil de mantener y escalar ya que cualquier cambio que se realice en la API A solo implicaría realizar otro cambio en la API B y no en otro componente más.
 
 ## Objetivo
 El objetivo principal de esta integración es obtener las facturas desde la API A en un rango de fechas determinado y enviar estos datos a la API B para su posterior procesamiento.
