@@ -89,9 +89,9 @@ Aqui encontrarás la documentación de la API B [Documentacion API B](https://gi
 
 ## Diagrama de Flujo
 
-A continuación se muestra el diagrama de flujo que describe la interacción entre la API B y la API A.
+A continuación se muestra el diagrama de flujo que describe la interacción entre **Cliente** <<>> **API B** <<>> **API A**.
 
-![Diagrama de Flujo](https://github.com/BeaMDG/apis/blob/main/diagrama.png)
+![Diagrama de Flujo](https://github.com/BeaMDG/apis/blob/main/diagrama_api.png)
 
 # Integración entre API A y API B
 
