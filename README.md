@@ -21,26 +21,45 @@ El objetivo principal de esta integración es obtener las facturas desde la API 
 
 El flujo de integración entre la API B y la API A sigue estos pasos:
 
-1. **Solicitud del Cliente a la API B**:
-   - El Cliente envía una solicitud `GET` a la API B con los parámetros `start_date` y `end_date`.
-   - **Códigos de Estado HTTP esperados**:
-     - `200 OK`: Solicitud procesada correctamente.
-     - `400 Bad Request`: Parámetros inválidos (fechas incorrectas).
-     - `500 Internal Server Error`: Error interno del servidor.
+## Flujo Requerido
 
-2. **API B solicita facturas a API A**:
-   - API B recibe la solicitud del Cliente y realiza una petición interna `GET` a la API A con los parámetros `fecha_inicio` y `fecha_fin`.
+El flujo de integración entre la API B y la API A sigue estos pasos:
+
+1. **Solicitud del Cliente a la API B**:
+
+   - El Cliente envía una solicitud `GET` a la API B con los parámetros `start_date` y `end_date`.
+     
+   - **Respuesta esperada**:
+     - La API B devuelve una respuesta solicitando la clave API B.
+
+3. **Cliente envía clave API a API B**:
+   
+   - El Cliente responde con la clave API en el encabezado.
+    
+   - **Códigos de Estado HTTP esperados**:
+     - `200 OK`: Autenticación aceptada y la solicitud es procesada.
+     - `401 Unauthorized`: Clave API inválida.
+
+5. **API B obtiene token de autenticación de API A**:
+   - API B realiza una solicitud `POST` a la API A para obtener el token de acceso
+     
+   - **Códigos de Estado HTTP esperados**:
+     - `200 OK`: Token de acceso recibido correctamente.
+     - `400 Bad Request`: Credenciales incorrectas.
+     - `401 Unauthorized`: Credenciales de cliente inválidas.
+
+6. **API B solicita facturas a API A**:
+   - Con el token de acceso recibido, API B realiza una solicitud `GET` a la API A para obtener las facturas.
+    
    - **Códigos de Estado HTTP esperados**:
      - `200 OK`: Facturas obtenidas correctamente.
-     - `400 Bad Request`: Parámetros inválidos en la solicitud de API B a API A.
+     - `400 Bad Request`: Parámetros inválidos en la solicitud.
      - `401 Unauthorized`: Token no válido.
      - `404 Not Found`: No se encontraron facturas para el rango de fechas solicitado.
-     - `500 Internal Server Error`: Error interno del servidor (API A).
+     - `500 Internal Server Error`: Error en el servidor de API A.
 
-3. **Transformación de Datos**:
-   - API B transforma los datos recibidos de la API A al formato esperado por sus consumidores.
-  
-Esquema de transformación de datos:
+7. **Transformación de Datos en API B**:
+   - API B transforma los datos recibidos de la API A al formato esperado por sus consumidores. La transformación de los datos incluye renombrar los campos de la siguiente manera:
 
 | Campo API A   | Campo API B    |
 |---------------|----------------|
@@ -49,13 +68,8 @@ Esquema de transformación de datos:
 | `monto`       | `amount_due`   |
 | `fecha_emision`| `date_issued` |
 
-
-4. **Respuesta de API B al Cliente**:
-   - API B responde al Cliente con las facturas transformadas en el formato de API B (`invoice_id`, `customer`, `amount_due`, `date_issued`).
-   - **Códigos de Estado HTTP esperados**:
-     - `200 OK`: Datos enviados correctamente.
-     - `400 Bad Request`: Error en los datos transformados o formato incorrecto.
-     - `500 Internal Server Error`: Error en la transformación de los datos.
+8. **API B responde al Cliente**:
+   - API B responde al Cliente con las facturas transformadas en el formato de API B.
 
 
 ## Documentación de la API A
