@@ -76,7 +76,7 @@ El flujo de integración entre la API B y la API A sigue estos pasos:
 
 Aqui encontrarás la documentación de la API A [Documentación API A](https://github.com/BeaMDG/apis/blob/main/documentaci%C3%B3n-API_A.yaml)
 
-###Obtención del Token de Autenticación API A
+### Obtención del Token de Autenticación API A
 
 Para acceder a la API A, es necesario obtener un token de autenticación. A continuación, se describen los pasos necesarios para obtener dicho token.
 
